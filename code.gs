@@ -3,24 +3,25 @@ function checkHoraroSchedule() {
     const response = UrlFetchApp.fetch(horaroUrl);
     const json = JSON.parse(response.getContentText());
     
-    const now = Math.floor(new Date().getTime() / 1000); // 現在時刻（Unixタイムスタンプ）
+    const now = Math.floor(new Date().getTime() / 1000); // 現在時刻（Unix タイムスタンプ）
   
     for (const item of json.data.items) {
       const startTime = item.scheduled_t; // 開始時間（Unix時間）
       const endTime = startTime + (item.length_t || 0) + (json.data.setup_t || 0);; // 終了時間（開始時間 + estimate + セットアップ時間）
      
       if (now >= startTime && now <= endTime) {
-        let url = item.data[3]; // URL列のデータ（Horaroのカラムに応じて修正）
+        let url = item.data[3]; // URL 列のデータ（Horaro のカラムに応じて修正）
        
         if (url) {
-          // MarkdownのURL形式から実際のURLを抽出
+          // Markdown の URL 形式から実際のURLを抽出
+          // URL 列が Markdown でないときはこの処理は外す
           const match = url.match(/\((https?:\/\/[^\)]+)\)/);
           if (match) {
-            url = match[1]; // ()内のURLを取得
+            url = match[1]; // ()内の URL を取得
           }
           
           Logger.log("リダイレクト先: " + url);
-          return url; // URLを返す（後でリダイレクト用のWebアプリで使用）
+          return url;
         }
       }
     }
