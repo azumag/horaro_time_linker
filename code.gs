@@ -3,10 +3,10 @@ function checkHoraroSchedule() {
   const response = UrlFetchApp.fetch(horaroUrl);
   const json = JSON.parse(response.getContentText());
   
-  const now = Math.floor(new Date().getTime() / 1000); // 現在時刻（Unixタイムスタンプ）
+  const now = Math.floor(new Date().getTime() / 1000); // 現在時刻（Unix time）
 
   for (const item of json.data.items) {
-    const startTime = item.scheduled_t; // 開始時間（Unix時間）
+    const startTime = item.scheduled_t; // 開始時間（Unix time）
     
      // 終了時間（開始時間 + estimate + セットアップ時間）
     const endTime = startTime + (item.length_t || 0) + (json.data.setup_t || 0);
