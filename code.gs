@@ -7,8 +7,10 @@ function checkHoraroSchedule() {
 
   for (const item of json.data.items) {
     const startTime = item.scheduled_t; // 開始時間（Unix時間）
-    const endTime = startTime + (item.length_t || 0) + (json.data.setup_t || 0);; // 終了時間（開始時間 + estimate + セットアップ時間）
-
+    
+     // 終了時間（開始時間 + estimate + セットアップ時間）
+    const endTime = startTime + (item.length_t || 0) + (json.data.setup_t || 0);
+    
     if (now >= startTime && now <= endTime) {
       let url = item.data[3]; // URL列のデータ（Horaroのカラムに応じて修正）
 
