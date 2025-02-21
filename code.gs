@@ -8,12 +8,10 @@ function checkHoraroSchedule() {
   for (const item of json.data.items) {
     const startTime = item.scheduled_t; // 開始時間（Unix時間）
     const endTime = startTime + (item.length_t || 0) + (json.data.setup_t || 0);; // 終了時間（開始時間 + estimate + セットアップ時間）
-    
-    Logger.log(now);
-    Logger.log(startTime);
+
     if (now >= startTime && now <= endTime) {
       let url = item.data[3]; // URL列のデータ（Horaroのカラムに応じて修正）
-      Logger.log(url);
+
       if (url) {
         // MarkdownのURL形式から実際のURLを抽出
         const match = url.match(/\((https?:\/\/[^\)]+)\)/);
